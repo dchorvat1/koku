@@ -1,7 +1,7 @@
 [
     {
         "database_column":"subscription_guid",
-        "database_table":"reporting_azurecostentrybill",
+        "database_table":"reporting_azurecostentrylineitem",
         "provider_column_name":"SubscriptionGuid",
         "report_type":"AZURE-CUR",
         "provider_type":"AZURE"
@@ -105,13 +105,6 @@
         "provider_type":"AZURE"
     },
     {
-        "database_column":"service_name",
-        "database_table":"reporting_azureservice",
-        "provider_column_name":"ServiceName",
-        "report_type":"AZURE-CUR",
-        "provider_type":"AZURE"
-    },
-    {
         "database_column":"service_info1",
         "database_table":"reporting_azureservice",
         "provider_column_name":"ServiceInfo1",
@@ -127,7 +120,7 @@
     },
     {
         "database_column":"additional_info",
-        "database_table":"reporting_azureservice",
+        "database_table":"reporting_azureproduct",
         "provider_column_name":"AdditionalInfo",
         "report_type":"AZURE-CUR",
         "provider_type":"AZURE"
