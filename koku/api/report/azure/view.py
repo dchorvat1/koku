@@ -16,19 +16,16 @@
 #
 """Azure views."""
 
-from rest_framework.decorators import (api_view,
-                                       permission_classes,
-                                       renderer_classes)
-from rest_framework.settings import api_settings
-
 from api.common.permissions.azure_access import AzureAccessPermission
-from api.report.view import _generic_report
+from api.report.view import ReportView
+
+class AzureView(ReportView):
+    """Azure Base View"""
+    permission_classes = [AzureAccessPermission]
+    provider = 'azure'
 
 
-@api_view(http_method_names=['GET'])
-@permission_classes([AzureAccessPermission])
-@renderer_classes(tuple(api_settings.DEFAULT_RENDERER_CLASSES))
-def costs(request):
+class AzureCostView(AzureView):
     """Get cost data.
 
     @api {get} /cost-management/v1/reports/azure/costs/ Get cost data
@@ -62,13 +59,9 @@ def costs(request):
         HTTP/1.1 200 OK
 
     """
-    return _generic_report(request, report='costs', provider='azure')
+    report = 'costs'
 
-
-@api_view(http_method_names=['GET'])
-@permission_classes([AzureAccessPermission])
-@renderer_classes(tuple(api_settings.DEFAULT_RENDERER_CLASSES))
-def instance_type(request):
+class AzureInstanceTypeView(AzureView):
     """Get inventory data.
 
     @api {get} /cost-management/v1/reports/azure/instance-types/ Get inventory instance type data
@@ -103,13 +96,11 @@ def instance_type(request):
         HTTP/1.1 200 OK
 
     """
-    return _generic_report(request, report='instance_type', provider='azure')
+    report = 'instance_type'
 
 
-@api_view(http_method_names=['GET'])
-@permission_classes([AzureAccessPermission])
-@renderer_classes(tuple(api_settings.DEFAULT_RENDERER_CLASSES))
-def storage(request):
+
+class AzureStorageView(AzureView):
     """Get inventory storage data.
 
     @api {get} /cost-management/v1/reports/azure/storage/ Get inventory storage data
@@ -139,4 +130,4 @@ def storage(request):
         HTTP/1.1 200 OK
 
     """
-    return _generic_report(request, report='storage', provider='azure')
+    report = 'storage'
