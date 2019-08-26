@@ -143,12 +143,11 @@ class AzureReportProcessor(ReportProcessorBase):
 
         report_date_range = utils.month_date_range(parser.parse(row_date))
         start_date, end_date = report_date_range.split('-')
-        subscription_guid = row.get('SubscriptionGuid')
 
         start_date_utc = parser.parse(start_date).replace(hour=0, minute=0, tzinfo=pytz.UTC)
         end_date_utc = parser.parse(end_date).replace(hour=0, minute=0, tzinfo=pytz.UTC)
 
-        key = (subscription_guid, start_date_utc, self._provider_id)
+        key = (start_date_utc, self._provider_id)
         if key in self.processed_report.bills:
             return self.processed_report.bills[key]
 
@@ -164,8 +163,7 @@ class AzureReportProcessor(ReportProcessorBase):
         bill_id = report_db_accessor.insert_on_conflict_do_nothing(
             table_name,
             data,
-            conflict_columns=['subscription_guid', 'billing_period_start',
-                              'provider_id']
+            conflict_columns=['billing_period_start', 'provider_id']
         )
 
         self.processed_report.bills[key] = bill_id

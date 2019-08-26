@@ -31,10 +31,8 @@ class AzureCostEntryBill(models.Model):
     class Meta:
         """Meta for AzureCostEntryBill."""
 
-        unique_together = ('subscription_guid', 'billing_period_start',
-                           'provider_id')
+        unique_together = ('billing_period_start', 'provider_id')
 
-    subscription_guid = models.CharField(max_length=50, null=False)
     billing_period_start = models.DateTimeField(null=False)
     billing_period_end = models.DateTimeField(null=False)
     summary_data_creation_datetime = models.DateTimeField(null=True)
@@ -65,6 +63,7 @@ class AzureCostEntryProduct(models.Model):
     consumed_service = models.CharField(max_length=50, null=False)
     resource_type = models.CharField(max_length=50, null=False)
     resource_group = models.CharField(max_length=50, null=False)
+    additional_info = JSONField(null=True)
 
 
 class AzureMeter(models.Model):
@@ -94,7 +93,6 @@ class AzureService(models.Model):
     service_name = models.CharField(max_length=50, null=False)
     service_info1 = models.TextField(null=True)
     service_info2 = models.TextField(null=True)
-    additional_info = JSONField(null=True)
 
 
 class AzureCostEntryLineItemDaily(models.Model):
@@ -122,6 +120,9 @@ class AzureCostEntryLineItemDaily(models.Model):
 
     service = models.ForeignKey('AzureService',
                                 on_delete=models.PROTECT, null=True)
+
+    # This is equivalent to the AWS usage_account_id
+    subscription_guid = models.CharField(max_length=50, null=False)
 
     tags = JSONField(null=True)
 
@@ -153,18 +154,16 @@ class AzureCostEntryLineItemDailySummary(models.Model):
     cost_entry_bill = models.ForeignKey('AzureCostEntryBill',
                                         on_delete=models.PROTECT)
 
-    cost_entry_product = models.ForeignKey('AzureCostEntryProduct',
-                                           on_delete=models.PROTECT, null=True)
-
-    meter = models.ForeignKey('AzureMeter',
-                              on_delete=models.PROTECT, null=True)
-
-    service = models.ForeignKey('AzureService',
-                                on_delete=models.PROTECT, null=True)
-
-    tags = JSONField(null=True)
-
     usage_date_time = models.DateTimeField(null=False)
+
+    # This is equivalent to the AWS usage_account_id
+    subscription_guid = models.CharField(max_length=50, null=False)
+
+    resource_location = models.CharField(max_length=50, null=False)
+
+    service_name = models.CharField(max_length=50, null=False)
+
+    instance_type = models.CharField(max_length=50, null=True)
 
     usage_quantity = models.DecimalField(max_digits=24, decimal_places=9,
                                          null=True)
@@ -173,6 +172,8 @@ class AzureCostEntryLineItemDailySummary(models.Model):
                                       null=True)
 
     offer_id = models.PositiveIntegerField(null=True)
+
+    tags = JSONField(null=True)
 
 
 class AzureTagsSummary(models.Model):

@@ -1,7 +1,7 @@
 [
     {
         "database_column":"subscription_guid",
-        "database_table":"reporting_azurecostentrylineitem",
+        "database_table":"reporting_azurecostentrylineitem_daily",
         "provider_column_name":"SubscriptionGuid",
         "report_type":"AZURE-CUR",
         "provider_type":"AZURE"
