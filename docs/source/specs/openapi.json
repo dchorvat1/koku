@@ -3674,10 +3674,6 @@
                 }
             },
             "Tags": {
-                "required": [
-                    "filter",
-                    "key_only"
-                ],
                 "properties": {
                     "filter": {
                         "$ref": "#/components/schemas/TagsFilter"
